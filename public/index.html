@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-main>
+                <v-simple-table>
+                    <template v-slot:default>
+                        <thead>
+                            <tr>
+                                <th class="text-left">
+                                    Date
+                                </th>
+                                <th class="text-left">
+                                    <center>Data</center>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in data" :key="item.date">
+                                <td>{{ item.date }}</td>
+                                <td>
+                                    <v-row>
+                                        <div v-for="x in item.data">
+                                            <table style="width: 45px; border: 1px solid">
+                                                <tr>
+                                                    <td style="font-size: 12px;width: 20px;">
+                                                        <center> {{x.time.slice(0, 2)}}</center>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table style="width: 45px; border: 1px solid">
+                                                <tr>
+                                                    <td style="font-size: 12px;">{{x.temperature}}</td>
+                                                    <td>|</td>
+                                                    <td style="font-size: 12px;">{{x.humidity}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </v-row>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        new Vue({
+            el: '#app',
+            data: {
+                data: null
+            },
+            method: {
+
+            },
+            created() {
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:3000/data'
+                })
+                    .then(response => {
+                        this.data = response.data
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
+            },
+            vuetify: new Vuetify(),
+        })
+    </script>
+</body>
+</html>
